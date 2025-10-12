@@ -1,0 +1,16 @@
+name: ml-bug-triage-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pandas
+  - numpy
+  - scikit-learn
+  - matplotlib
+  - seaborn
+  - nltk
+  - tensorflow
+  - keras
+  - jupyter
+  - streamlit
