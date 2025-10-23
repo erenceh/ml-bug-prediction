@@ -1,0 +1,77 @@
+from fastapi import FastAPI
+import os
+import json
+from pydantic import BaseModel
+from datetime import datetime
+from db import get_connection, init_db
+from model_service import predict_priority
+import pandas as pd
+
+app = FastAPI()
+init_db()
+
+class BugReport(BaseModel):
+  title: str
+  description: str
+  
+LABEL_MAP_PATH = os.path.join(os.path.dirname(__file__), "..", "ml", "models", "bert", "label_map.json")
+  
+with open(LABEL_MAP_PATH, "r") as f:
+  label_map = json.load(f)
+  
+label_map = {int(k): v for k, v in label_map.items()}
+  
+@app.post("/predict")
+def predict(bug: BugReport):
+  try:
+    label, confidence, probs = predict_priority(bug.title, bug.description)
+  except Exception as e:
+    return {"error": str(e)}
+  
+  predicted_label_str = label_map[label]
+  
+  conn = get_connection()
+  conn.execute("""
+    INSERT INTO predictions (title, description, predicted_label, numeric_label, confidence, timestamp) 
+    VALUES (?, ?, ?, ?, ?, ?)""",
+    (bug.title, bug.description, predicted_label_str, label, confidence, datetime.now().isoformat())
+  )
+  conn.commit()
+  conn.close()
+  
+  # convert probs tensor to dict with readable labels
+  probs_dict = {label_map[i]: float(probs[i]) for i in range(len(label_map))}
+  
+  return {
+    "priority": predicted_label_str,
+    "confidence": round(confidence, 3),
+    "probabilities": probs_dict
+  }
+  
+@app.get("/predictions")
+def get_predictions(limit: int = 20):
+  conn = get_connection()
+  cursor = conn.execute("SELECT * FROM predictions ORDER BY timestamp DESC LIMIT ?", (limit,))
+  rows = [dict(row) for row in cursor.fetchall()]
+  conn.close()
+  return {"predictions": rows}
+
+@app.get("/stats")
+def get_label_stats():
+  conn = get_connection()
+  df = pd.read_sql_query("SELECT predicted_label, confidence FROM predictions", conn)
+  conn.close()
+  
+  if df.empty:
+    return {"counts": {}, "avg_conf": {}}
+  
+  count_df = df["predicted_label"].value_counts().reset_index()
+  count_df.columns = ["Priority", "Count"]
+  
+  avg_conf = df.groupby("predicted_label")["confidence"].mean().reset_index()
+  avg_conf.columns = ["Priority", "AvgConfidence"]
+  
+  return {
+    "counts": count_df.to_dict(orient="records"),
+    "avg_conf": avg_conf.to_dict(orient="records")
+  }
