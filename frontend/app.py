@@ -62,14 +62,34 @@ with tab2:
   st.write("### Previous Predictions")
   
   try:
-    response = requests.get(f"{API_URL}/predictions?limit=20", timeout=10)
+    response = requests.get(f"{API_URL}/predictions", timeout=10)
     
     if response.status_code == 200:
       data = response.json()
       df = pd.DataFrame(data["predictions"])
       
       if not df.empty:
-        st.dataframe(df)
+        for idx, row in df.iterrows():
+          cols = st.columns([4, 1])
+          view_clicked = False
+          
+          with cols[0]:
+            st.write(f"**{row['title']}** | Priority: {row['predicted_label']} | Confidence: {row['confidence']*100:.2f}%")
+            
+          with cols[1]:
+            if st.button("View", key=f"view_{idx}"):
+              view_clicked = True
+              
+          if view_clicked:
+            st.markdown("---")
+            st.write("**Title:**", row["title"])
+            st.write("**Description:**", row["description"])
+            st.write("**Predicted Label:**", row["predicted_label"])
+            st.write("**Numeric Label:**", row["numeric_label"])
+            st.write("**Confidence:**", row["confidence"]*100, "%")
+            st.write("**Timestamp:**", row["timestamp"])
+            st.markdown("---")
+          
       else:
         st.info("No predictions yet.")
         

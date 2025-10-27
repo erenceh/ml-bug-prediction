@@ -31,13 +31,23 @@ def predict(bug: BugReport):
   predicted_label_str = label_map[label]
   
   conn = get_connection()
-  conn.execute("""
-    INSERT INTO predictions (title, description, predicted_label, numeric_label, confidence, timestamp) 
-    VALUES (?, ?, ?, ?, ?, ?)""",
-    (bug.title, bug.description, predicted_label_str, label, confidence, datetime.now().isoformat())
-  )
-  conn.commit()
-  conn.close()
+  try:
+    cursor = conn.execute("SELECT COUNT(*) FROM predictions")
+    row_count = cursor.fetchone()[0]
+    
+    if row_count >= 10:
+      conn.execute("DELETE FROM predictions WHERE id = (SELECT id FROM predictions ORDER BY timestamp ASC LIMIT 1)")
+    
+    conn.execute("""
+      INSERT INTO predictions (title, description, predicted_label, numeric_label, confidence, timestamp) 
+      VALUES (?, ?, ?, ?, ?, ?)""",
+      (bug.title, bug.description, predicted_label_str, label, confidence, datetime.now().isoformat())
+    )
+    conn.commit()
+  except Exception as e:
+    return {"error": f"Database insert failed: {e}"}
+  finally:
+    conn.close()
   
   # convert probs tensor to dict with readable labels
   probs_dict = {label_map[i]: float(probs[i]) for i in range(len(label_map))}
@@ -49,9 +59,9 @@ def predict(bug: BugReport):
   }
   
 @app.get("/predictions")
-def get_predictions(limit: int = 20):
+def get_predictions():
   conn = get_connection()
-  cursor = conn.execute("SELECT * FROM predictions ORDER BY timestamp DESC LIMIT ?", (limit,))
+  cursor = conn.execute("SELECT * FROM predictions ORDER BY timestamp DESC LIMIT 10")
   rows = [dict(row) for row in cursor.fetchall()]
   conn.close()
   return {"predictions": rows}
