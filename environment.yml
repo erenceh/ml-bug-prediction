@@ -1,6 +1,7 @@
-name: bug-triage-env
+name: bug-prediction-env
 channels:
   - defaults
+  - conda-forge
 dependencies:
   - python=3.11
   - pandas
@@ -9,7 +10,20 @@ dependencies:
   - numpy
   - jupyter
   - matplotlib
-  - nltk
   - seaborn
-  - streamlit
+  - nltk
   - wordcloud
+  - xgboost
+  - lightgbm
+  - imbalanced-learn
+  - plotly
+  - requests
+  - fastapi
+  - uvicorn
+  - streamlit
+  - joblib
+  - pip
+  - pip:
+      - transformers
+      - datasets
+      - torch
