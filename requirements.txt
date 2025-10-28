@@ -3,4 +3,4 @@ uvicorn
 pandas
 torch
 transformers
-request
+requests

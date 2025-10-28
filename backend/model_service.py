@@ -3,8 +3,6 @@ import torch
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-load_dotenv()
-
 MODEL_TOKEN = st.secrets["HF_TOKEN"]
 MODEL_ID = "erenceh/ml-bug-priority"
 
