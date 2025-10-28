@@ -1,7 +1,4 @@
 from fastapi import FastAPI
-import os
-from huggingface_hub import hf_hub_download
-import json
 from pydantic import BaseModel
 from datetime import datetime
 from backend.db import get_connection, init_db
@@ -17,18 +14,7 @@ class BugReport(BaseModel):
     description: str
 
 
-HF_TOKEN = os.environ.get("HF_TOKEN")
-
-LABEL_MAP_PATH = hf_hub_download(
-    repo_id="erenceh/ml-bug-priority",
-    filename="label_map.json",
-    token=st.secrets[HF_TOKEN],
-)
-
-with open(LABEL_MAP_PATH, "r") as f:
-    label_map = json.load(f)
-
-label_map = {int(k): v for k, v in label_map.items()}
+label_map = {0: "Critical", 1: "High", 2: "Medium", 3: "Low", 4: "Trivial"}
 
 
 @app.post("/predict")

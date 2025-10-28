@@ -3,7 +3,7 @@ import torch
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-MODEL_TOKEN = st.secrets["HF_TOKEN"]
+MODEL_TOKEN = os.environ.get("HF_TOKEN")
 MODEL_ID = "erenceh/ml-bug-priority"
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_ID, token=MODEL_TOKEN)
