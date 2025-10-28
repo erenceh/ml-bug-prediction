@@ -22,7 +22,7 @@ with tab1:
                 response = requests.post(
                     f"{API_URL}/predict",
                     json={"title": title, "description": description},
-                    timeout=10,
+                    timeout=60,
                 )
 
                 if response.status_code == 200:
@@ -66,7 +66,7 @@ with tab2:
     st.write("### Previous Predictions")
 
     try:
-        response = requests.get(f"{API_URL}/predictions", timeout=10)
+        response = requests.get(f"{API_URL}/predictions", timeout=60)
 
         if response.status_code == 200:
             data = response.json()
@@ -111,7 +111,7 @@ with tab3:
     st.write("### Label Distribution")
 
     try:
-        response = requests.get(f"{API_URL}/stats", timeout=10)
+        response = requests.get(f"{API_URL}/stats", timeout=60)
 
         if response.status_code == 200:
             data = response.json()
