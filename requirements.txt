@@ -1,6 +1,8 @@
+streamlit
+pandas
+plotly
+requests
 fastapi
 uvicorn
-pandas
 torch
 transformers
-requests
