@@ -4,8 +4,8 @@ from huggingface_hub import hf_hub_download
 import json
 from pydantic import BaseModel
 from datetime import datetime
-from db import get_connection, init_db
-from model_service import predict_priority
+from backend.db import get_connection, init_db
+from backend.model_service import predict_priority
 import pandas as pd
 
 app = FastAPI()
