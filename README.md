@@ -38,7 +38,7 @@ conda activate bug-prediction-env
 
 ### 1. Start the FastAPI Backend
 
-Make folder named `data/` in the root direectory if it doesn't exist:
+Make folder named `data/` in the root directory if it doesn't exist:
 
 ```cli
 mkdir data
