@@ -91,7 +91,6 @@ with tab2:
                         st.write("**Title:**", row["title"])
                         st.write("**Description:**", row["description"])
                         st.write("**Predicted Label:**", row["predicted_label"])
-                        st.write("**Numeric Label:**", row["numeric_label"])
                         st.write("**Confidence:**", row["confidence"] * 100, "%")
                         st.write("**Timestamp:**", row["timestamp"])
                         st.markdown("---")
