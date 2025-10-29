@@ -53,13 +53,13 @@ In the project root folder, run:
 uvicorn backend.api:app --reload
 ```
 
-### 2. Start the Streamlis Frontend
+### 2. Start the Streamlit Frontend
 
 In a new terminal (still in the root folder), run:
 
 ```cli
 conda activate bug-prediction-env
-strealit run frontend/app.py
+streamlit run frontend/app.py
 ```
 
 ## Example Usage
