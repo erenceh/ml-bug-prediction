@@ -78,5 +78,5 @@ This project is provided for educational and demonstration purposes under the MI
 
 ## Credits
 
-Developed by Eric Rencehausen
+Developed by Eric Rencehausen<br>
 Trained using the ISEC Data Challenge Dataset and fine-tuned with Hugging Face Transformers.
