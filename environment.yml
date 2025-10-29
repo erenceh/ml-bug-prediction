@@ -5,25 +5,15 @@ channels:
 dependencies:
   - python=3.11
   - pandas
-  - scipy
-  - scikit-learn
   - numpy
-  - jupyter
-  - matplotlib
-  - seaborn
-  - nltk
-  - wordcloud
-  - xgboost
-  - lightgbm
-  - imbalanced-learn
-  - plotly
   - requests
   - fastapi
   - uvicorn
   - streamlit
-  - joblib
+  - plotly
+  - sqlite
   - pip
   - pip:
-      - transformers
-      - datasets
       - torch
+      - transformers
+      - pydantic

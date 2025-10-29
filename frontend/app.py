@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 import plotly.graph_objects as go
 
-API_URL = st.secrets.get("API_URL", "http://127.0.0.1:8000")
+API_URL = "http://127.0.0.1:8000"
 
 st.title("Bug Priority Predictor")
 tab1, tab2, tab3 = st.tabs(["Prediction", "History", "Insights"])

@@ -37,8 +37,8 @@ def predict(bug: BugReport):
 
         conn.execute(
             """
-      INSERT INTO predictions (title, description, predicted_label, confidence, timestamp) 
-      VALUES (?, ?, ?, ?, ?)""",
+            INSERT INTO predictions (title, description, predicted_label, confidence, timestamp) 
+            VALUES (?, ?, ?, ?, ?)""",
             (
                 bug.title,
                 bug.description,
