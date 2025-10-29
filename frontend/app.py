@@ -88,11 +88,11 @@ with tab2:
 
                     if view_clicked:
                         st.markdown("---")
-                        st.write("**Title:**", row["title"])
-                        st.write("**Description:**", row["description"])
-                        st.write("**Predicted Label:**", row["predicted_label"])
-                        st.write("**Confidence:**", row["confidence"] * 100, "%")
-                        st.write("**Timestamp:**", row["timestamp"])
+                        st.write(f"**Title:** {row['title']}")
+                        st.write(f"**Description:** {row['description']}")
+                        st.write(f"**Predicted Label:** {row['predicted_label']}")
+                        st.write(f"**Confidence:** {row['confidence']*100:.2f}%")
+                        st.write(f"**Timestamp:** {row['timestamp']}")
                         st.markdown("---")
 
             else:
