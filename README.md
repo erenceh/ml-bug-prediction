@@ -38,9 +38,18 @@ conda activate bug-prediction-env
 
 ### 1. Start the FastAPI Backend
 
+Make folder named `data/` in the root direectory if it doesn't exist:
+
+```cli
+mkdir data
+```
+
+This folder is required for the SQLite database (`predictions.db`) used by the backend to store prediction history.
+
 In the project root folder, run:
 
 ```cli
+
 uvicorn backend.api:app --reload
 ```
 
