@@ -2,7 +2,7 @@ import os
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 import torch
 
-MODEL_ID = "erenceh/ml-bug-priority"
+MODEL_ID = "erenceh/ml-bug-prediction"
 
 tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_ID)
