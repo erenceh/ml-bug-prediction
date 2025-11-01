@@ -1,4 +1,3 @@
-import os
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, pipeline
 import torch
 
