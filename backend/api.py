@@ -79,7 +79,7 @@ def get_label_stats():
     conn.close()
 
     if df.empty:
-        return {"counts": {}, "avg_conf": {}}
+        return {"counts": {}, "avg_conf": {}, "confidences": {}}
 
     count_df = df["predicted_label"].value_counts().reset_index()
     count_df.columns = ["Priority", "Count"]
@@ -87,7 +87,11 @@ def get_label_stats():
     avg_conf = df.groupby("predicted_label")["confidence"].mean().reset_index()
     avg_conf.columns = ["Priority", "AvgConfidence"]
 
+    confidences = df[["predicted_label", "confidence"]].copy()
+    confidences.columns = ["Priority", "Confidence"]
+
     return {
         "counts": count_df.to_dict(orient="records"),
         "avg_conf": avg_conf.to_dict(orient="records"),
+        "confidences": confidences.to_dict(orient="records"),
     }

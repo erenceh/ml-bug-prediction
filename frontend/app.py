@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import pandas as pd
 import plotly.graph_objects as go
+import plotly.express as px
 
 API_URL = "http://127.0.0.1:8000"
 
@@ -115,6 +116,7 @@ with tab3:
             data = response.json()
             counts = pd.DataFrame(data["counts"])
             avg_conf = pd.DataFrame(data["avg_conf"])
+            confidences = pd.DataFrame(data["confidences"])
 
             if not counts.empty:
                 st.bar_chart(counts.set_index("Priority"))
@@ -124,6 +126,20 @@ with tab3:
             if not avg_conf.empty:
                 st.write("### Average Confidence by Label")
                 st.bar_chart(avg_conf.set_index("Priority"))
+
+            if not confidences.empty:
+                st.write("### Distribution of Model Confidence")
+
+                fig_hist = px.histogram(
+                    confidences,
+                    x="Confidence",
+                    color="Priority",
+                    nbins=20,
+                    barmode="overlay",
+                    opacity=0.7,
+                )
+                fig_hist.update_layout(xaxis=dict(range=[0, 1]))
+                st.plotly_chart(fig_hist)
             else:
                 st.info("Not enough data for confidence insights yet.")
 
