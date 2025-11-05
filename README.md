@@ -29,9 +29,20 @@ cd ml-bug-prediction
 
 ### 2. Create and Activate the Conda Environment
 
+      Option A: Using Conda
+
 ```cli
 conda env create -f environment.yml
 conda activate bug-prediction-env
+```
+
+      Option B: Using pip and a Virtual Environment (Recommended if Conda is not installed)
+
+```cli
+python -m venv venv
+venv\Scripts\activate		# On Windows
+source venv/bin/activate	# On macOS/Linux
+pip install -r requirements.txt
 ```
 
 ## Running the Project Locally
@@ -55,10 +66,9 @@ uvicorn backend.api:app --reload
 
 ### 2. Start the Streamlit Frontend
 
-In a new terminal (still in the root folder), run:
+In a new terminal (still in the root folder), activate environment and run:
 
 ```cli
-conda activate bug-prediction-env
 streamlit run frontend/app.py
 ```
 
