@@ -1,6 +1,3 @@
-# Core environment
-python==3.11
-
 # Data processing
 pandas
 numpy
